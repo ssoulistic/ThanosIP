@@ -1,2 +1,7 @@
-/Crawler/data/
-/Crawler/etc/
+# important datas
+
+/Crawler/data/**
+/Crawler/etc/**
+
+
+
