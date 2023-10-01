@@ -1,4 +1,4 @@
-import dbModule
+import Crawler.src.module.dbModule as dbModule
 
 table_name="test_table" # 사용할 Table 이름
 # insert_data='"123.123.123.123",1,NULL,"KR","never.comx",33' # DB에 기록할 데이터 (크롤링한 데이터 중 필요한 것)
