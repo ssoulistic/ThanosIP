@@ -9,7 +9,7 @@ url = ('https://github.com/monitorapp-aicc/feed/blob/main/ip.txt')
 t = 0
 timecode = datetime.datetime.now().strftime('%y%m%d_%H%M%S')
 
-ip_output = open("./results/LabAPI_output"+timecode+".txt", 'w')
+ip_output = open("../../data/LabAPI_output"+timecode+".txt", 'w')
 
 for t in tqdm(range(1), desc='Processing'):
     response = requests.request(method='GET', url=url)
