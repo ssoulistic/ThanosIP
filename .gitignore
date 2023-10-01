@@ -1,5 +1,7 @@
-/Crawler/data/
-/Crawler/etc/
-!/Crawler/data/preprocessed/readme.txt
-!/Crawler/data/resources/readme.txt
-!/Crawler/data/responses/readme.txt
+# important datas
+
+/Crawler/data/**
+/Crawler/etc/**
+
+
+
