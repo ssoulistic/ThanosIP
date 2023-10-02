@@ -1,7 +1,7 @@
 import pymysql
 import json
 
-dbkeys=open("./etc/teniron.json",'r',encoding='utf-8')
+dbkeys=open("/home/teamlab/ThanosIP/Crawler/etc/teniron.json",'r',encoding='utf-8')
 db_meta=json.load(dbkeys)
 
 SERVER,PORT = db_meta["MariaDB"]["server"].split("/")

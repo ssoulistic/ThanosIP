@@ -2,6 +2,6 @@
 
 /Crawler/data/**
 /Crawler/etc/**
-
+/Module/__pycache__
 
 
