@@ -6,31 +6,74 @@ sys.path.append('/home/teamlab/ThanosIP/Module/')
 import IPmaster
 import dbModule
 import json
+import hashlib
 
 shred_inst=IPmaster.ip_shredder()
+error_log=[]
 
+# url등 필요한 설정 옵션 불러오기.
 with open("/home/teamlab/ThanosIP/Crawler/etc/teniron.json") as file:
-	options=json.load(file)
+	options=json.load(file) # url, 필요시 key 받아오기.
 	ip_list = options.keys()
-	exclude=["MariaDB","AwsEC2","AbuseAPI"]
-	for name in ip_list:
+	exclude=["MariaDB","AwsEC2","AbuseAPI"] #제외할사이트 지정
+
+# 사이트 순회 다운로드 
+	for name in ip_list: 
 		if name not in exclude:
 			url=options[name]["url"]["ip"]["down"]
+
+# 다운로드 url이 존재할 시(사전조사)
 			if url:
 				response = requests.get(url)
-				if response.status_code == 200:  # '200'은 HTTP 상태 코드 중 하나로, 'OK'를 나타냄
-					current_datetime = datetime.now() # 현재 날짜와 시간을 포맷팅하여 파일 이름에 넣기
-					ip_list=shred_inst.ip_extractor(str(response.content))
-					table_name="bad_ip_list" # 사용할 Table 이름
+				if response.status_code == 200:  # 통신 ok시
+					current_datetime = datetime.now() # 날짜
+					file_hash=hashlib.sha256(response.content).hexdigest() #file 변조 확인 hash값 
+					
+					ip_list=shred_inst.ip_extractor(str(response.content)) # ip 추출
+					table_name="bad_ip_list" # 저장할 Table 이름
+					itable_name="file_history"
 					DB_name="laBelup" # 사용할 Database 이름
 					db_class = dbModule.Database(DB_name) # db 인스턴스
-					for i in tqdm(ip_list,desc=name):
+					
+					sql=f"SELECT hash from {itable_name} WHERE site_id='{name}'"
+					db_hash=db_class.executeAll(sql)
+					db_class.commit()
+					# hash 존재 여부 확인
+					if not db_hash:
 						try:
-							insert_data=f'"{i}","{url}","{current_datetime}"'
-							sql = f"INSERT INTO {table_name} VALUES({insert_data})" 
-							db_class.execute(sql) # db에 sql문 작성
-							db_class.commit() #sql문 실행 
+							new_sql = f"INSERT INTO {itable_name} VALUES('{name}','{url}',NULL)"
+							db_class.execute(new_sql)
+							db_class.commit()
 						except Exception as ex:
-							print(ex)
+							error_log.append("DBerror\n"+str(ex))
+					else:
+						db_hash=db_hash[0]['hash']
+					# 변경점 확인시 
+					if db_hash!=file_hash:
+						for i in tqdm(ip_list,desc=name):
+							try:
+								insert_data=f'"{i}","{name}","{current_datetime}"'
+								sql = f"INSERT INTO {table_name}(ip,site_id,update_time) VALUES({insert_data})" 
+								db_class.execute(sql) # db에 sql문 작성
+								db_class.commit() #sql문 실행 
+							except Exception as ex:
+								error_log.append("DBerror\n"+str(ex))
+						end_sql = f"UPDATE {itable_name} SET hash='{file_hash}' WHERE site_id='{name}'"
+						db_class.execute(end_sql)
+						db_class.commit()
 				else:
-				    print(f"파일을 다운로드하는 중에 오류가 발생했습니다. 응답 코드: {response.status_code}")
+				    error_log.append(f"{name} *** 파일을 다운로드하는 중에 오류가 발생했습니다. 응답 코드: {response.status_code}")
+
+# error 로그 존재시 기록하기
+if error_log:
+	with open(f"/home/teamlab/ThanosIP/Crawler/data/internal_logs/errlog_{current_datetime}.txt","w") as errfile:
+		for e in error_log:
+			errfile.write(e+"\n")
+	message="**Partial Success** Some error occured during execution please check errlog."
+else:
+	message="***Success*** Successfully saved data to our database"
+
+with open(f"/home/teamlab/ThanosIP/Crawler/data/internal_logs/scooper_log.txt","a") as sclog:
+	sclog.write(f'[{current_datetime}] {message}\n')
+
+

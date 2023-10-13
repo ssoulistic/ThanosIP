@@ -6,15 +6,16 @@ import json
 # import time
 
 # 검색 위치 url 및 privatekey 찾아오기.
-file_path="./etc/teniron.json"
+file_path="/home/teamlab/ThanosIP/Crawler/etc/teniron.json"
 with open(file_path,'r',encoding='utf-8') as file:
     data = json.load(file)
-    url,private_key = data["BarracudaCentral"].values()
+    url = data["BarracudaCentral"]['url']['ip']['look']
 
 # 크롤링할 ip 가져오기, 일시적 에러 + 서버 오류시 대응.
-ip_list_name="laBel_sample0001_ppd.txt"
-ip_list_path=f'./data/preprocessed/{ip_list_name}'
-new = open(f'./data/responses/barracuda_result_{ip_list_name}','w')
+# ip_list_name="laBel_sample0001_ppd.txt"
+ip_list_name='bad_ips.txt'
+ip_list_path=f'/home/teamlab/ThanosIP/Crawler/data/resources/{ip_list_name}'
+new = open(f'/home/teamlab/ThanosIP/Crawler/data/responses/barracuda_result_{ip_list_name}','w')
 retry_list=[]
 error_log=[]
 with open(ip_list_path,'r',encoding='utf-8') as ips:
