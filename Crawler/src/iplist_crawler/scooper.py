@@ -34,10 +34,12 @@ with open("/home/teamlab/ThanosIP/Crawler/etc/teniron.json") as file:
 					itable_name="file_history"
 					DB_name="laBelup" # 사용할 Database 이름
 					db_class = dbModule.Database(DB_name) # db 인스턴스
-					
-					sql=f"SELECT hash from {itable_name} WHERE site_id='{name}'"
-					db_hash=db_class.executeAll(sql)
-					db_class.commit()
+					try:
+						sql=f"SELECT hash from {itable_name} WHERE site_id='{name}'"
+						db_hash=db_class.executeAll(sql)
+						db_class.commit()
+					except Exception as ex:
+						error_log.append("DBerror\n"+str(ex))
 					# hash 존재 여부 확인
 					if not db_hash:
 						try:
@@ -58,9 +60,12 @@ with open("/home/teamlab/ThanosIP/Crawler/etc/teniron.json") as file:
 								db_class.commit() #sql문 실행 
 							except Exception as ex:
 								error_log.append("DBerror\n"+str(ex))
-						end_sql = f"UPDATE {itable_name} SET hash='{file_hash}' WHERE site_id='{name}'"
-						db_class.execute(end_sql)
-						db_class.commit()
+						try:
+							end_sql = f"UPDATE {itable_name} SET hash='{file_hash}' WHERE site_id='{name}'"
+							db_class.execute(end_sql)
+							db_class.commit()
+						except Exception as ex:
+							error_log.append("DBerror\n"+str(ex))
 				else:
 				    error_log.append(f"{name} *** 파일을 다운로드하는 중에 오류가 발생했습니다. 응답 코드: {response.status_code}")
 
