@@ -3,5 +3,6 @@
 /Crawler/data/**
 /Crawler/etc/**
 /Module/__pycache__
-
+/Server
+/log
 
