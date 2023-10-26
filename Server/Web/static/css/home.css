@@ -1,0 +1,138 @@
+body{
+    text-align: center;
+    background-color: #1E1E1E;
+    color:#ECECEC
+}
+input{
+    background-color: #a595b8;
+    color:#ECECEC
+}
+input[type='text']:invalid{
+    background-color: red;
+}
+
+div{
+    justify-content: center;
+    display: flex;
+    position: relative;
+}
+img{
+    max-width: 100px;
+    object-fit: fill;
+}
+#title{
+    font-size: 5rem;
+    margin: 20px;
+    padding: 20px;
+    color: #ECECEC;
+}
+.search{
+    display: flex;
+    position: relative;
+    padding:10px;
+}
+.search-option{
+    position:relative;
+    text-align: center;
+    margin:10px;
+    padding: 10px;
+    border-radius: 10px;
+    width:6rem;
+    background-color: #8D7E9F;
+    color: #ECECEC;
+
+}
+.search-select{
+    border-radius: 10px;
+}
+.search-form{
+    position:relative;
+    text-align: center;
+    margin:10px;
+    padding: 10px;
+    border-radius: 10px;
+    width:22em;
+    background-color: #8D7E9F;
+    color:#ECECEC
+}
+.search-button{
+    background-color: #564071;
+    color:#ECECEC
+}
+
+.middle-view{
+    display: flex;
+}
+.title-mid{
+    background-color: #564071;
+}
+.result-page{
+    background-color:#545460;
+    width: 200px;
+    height: auto;
+}
+
+.result-side{
+    flex-direction: column;
+    width: 100px;
+    position: relative;
+    left:10px;
+    margin: 10px;
+}
+.result-danger{
+    max-width: 110px;
+    border: 25px solid #545460;
+    border-radius: 90%;
+    background-color: #343739;
+}
+.result-foot{
+    background-color: #D2C6E0;
+}
+section{
+    position: relative;
+    top:auto;
+    margin:10px 50px;
+    padding: 15px;
+    border-radius: 10px;   
+    border: 5px solid #D2C6E0;
+    max-width: 500rem;
+    background-color: #494851;
+
+}
+article{
+    display: flex;
+    background-color: #545460;
+    padding: 10px;
+}
+aside{
+    border-radius: 10px;
+    border: 5px solid aqua;
+    width: 350px;
+    height: 400px;
+    position: relative;
+    margin: 10px;
+    padding: 10px;
+}
+table{
+    width:100%;
+    min-width: 50px;
+    border:1px solid #444444;
+    border-collapse: collapse;
+}
+.reputation{
+    flex-direction: row;
+}
+.button-rep{
+    position: relative;
+    max-width: 50px;
+    size:50%;
+    border: 0;
+    background-color: transparent;
+    object-fit: fill;
+
+}
+footer{
+    top:20px;
+    position: relative;
+    color:#ECECEC;
+}
