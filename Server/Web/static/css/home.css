@@ -1,6 +1,7 @@
 body{
     text-align: center;
     background-color: #1E1E1E;
+    font-size: 14px;
     color:#ECECEC
 }
 input{
@@ -10,17 +11,17 @@ input{
 input[type='text']:invalid{
     background-color: red;
 }
-
 div{
     justify-content: center;
     display: flex;
     position: relative;
 }
 img{
-    max-width: 100px;
-    object-fit: fill;
+    object-fit: cover;
 }
 #title{
+    background-image:url("/Server/Web/static/img/master_thanos.png");
+    background-repeat: no-repeat;
     font-size: 5rem;
     margin: 20px;
     padding: 20px;
@@ -64,24 +65,21 @@ img{
     display: flex;
 }
 .title-mid{
+    font-size: 20px;
     background-color: #564071;
 }
 .result-page{
     background-color:#545460;
-    width: 200px;
+    width: 62%;
     height: auto;
 }
 
 .result-side{
     flex-direction: column;
-    width: 100px;
+    width: 38%;
     position: relative;
-    left:10px;
-    margin: 10px;
 }
 .result-danger{
-    max-width: 110px;
-    border: 25px solid #545460;
     border-radius: 90%;
     background-color: #343739;
 }
@@ -121,18 +119,26 @@ table{
 }
 .reputation{
     flex-direction: row;
+    width:100px;
+    height: 50px;
+    align-items: center;
 }
+
+.fill{
+    object-fit: cover;
+}
+.div-rep{
+    width: 50px;
+}
+
 .button-rep{
     position: relative;
-    max-width: 50px;
-    size:50%;
-    border: 0;
     background-color: transparent;
-    object-fit: fill;
-
+    object-fit: scale-down;
 }
 footer{
-    top:20px;
     position: relative;
     color:#ECECEC;
+    padding: 20px;
+    margin:10%;
 }
