@@ -24,7 +24,12 @@ class Database():
         self.cursor.execute(query, args)
         row = self.cursor.fetchone()
         return row
- 
+
+    def executeMany(self, query, many,args={}):
+        self.cursor.execute(query,args)
+        row=self.cursor.fetchmany(many)
+        return row
+    
     def executeAll(self, query, args={}):
         self.cursor.execute(query, args)
         row = self.cursor.fetchall()
@@ -32,3 +37,4 @@ class Database():
  
     def commit(self):
         self.db.commit()
+        self.cursor.close()
