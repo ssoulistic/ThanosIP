@@ -31,9 +31,6 @@ def page_not_found(error):
     return render_template('/error-page.html') 
 
 
-#######
-
-
 @app.route("/")
 def home():
     return render_template('/home.html')
