@@ -1,147 +1,436 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <title>Welcome to ThanosIP</title>
+<!DOCTYPE html>
+<html>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="static/css/home.css">
-  </head>
+<head>
 
-  <body>
+	<!-- /.website title -->
+	<title>ThanosIP</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-    <header id="title">Thanos IP</header>
-    
-    <div>
-      <span class="search">
-        <form>
-          <select class="search-option">
-          <option  value="">
-            -type-
-          </option>
-          <option value="ip">
-            ip
-          </option>
-          <option value="file">
-            file
-          </option>
-        </select>
-        </form>
-      <form class="search-form" >
-        검색 : <input type="text" placeholder="ip를 입력하세요" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" autocomplete="on">
-        <button type="button" class="search-button">Search</button>
-      </form>
-    </span>
-    </div>
+	<!-- CSS Files -->
+	<link href="../static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="../static/css/font-awesome.min.css" rel="stylesheet">
+	<link href="../static/fonts/icon-7-stroke/css/pe-icon-7-stroke.css" rel="stylesheet">
+	<link href="../static/css/animate.css" rel="stylesheet" media="screen">
+	<link href="../static/css/owl.theme.css" rel="stylesheet">
+	<link href="../static/css/owl.carousel.css" rel="stylesheet">
 
-    <div class="middle-view">
-      <section>
-        <div class="title-mid">reputation result</div>
-        
-        <article>
-          <div class="result-page">
-            {
-              "223.130.200.107": "safe",
-              "site_id": "NULL",
-              "update_time": "NULL"
-            }
-          </div>
-          
-          <div class="result-side">
-            <div class="result-danger">
-              <img src="../static/img/level7.png">
-            </div>
-            <div class="reputation">
+	<!-- Colors -->
+	<link href="../static/css/css-index.css" rel="stylesheet" media="screen">
+	<!-- <link href="css/css-index-green.css" rel="stylesheet" media="screen"> -->
+	<!-- <link href="css/css-index-purple.css" rel="stylesheet" media="screen"> -->
+	<!-- <link href="css/css-index-red.css" rel="stylesheet" media="screen"> -->
+	<!-- <link href="css/css-index-orange.css" rel="stylesheet" media="screen"> -->
+	<!-- <link href="css/css-index-yellow.css" rel="stylesheet" media="screen"> -->
 
-            <div>
-              <button type="button" class="button-rep"><img src="../static/img/good.png"></button>
-            </div>
+	<!-- Google Fonts -->
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic" />
 
-            <div>
-              <button type="button" class="button-rep"><img src="../static/img/bad.png"></button>
-            </div>
+</head>
 
-            </div>
+<body data-spy="scroll" data-target="#navbar-scroll">
+	
+	<!-- /.preloader -->
+	<div id="preloader"></div>
+	<div id="top"></div>
 
-          </div>
-        </article>
-        <div class="result-foot">악성 IP 아닌 이유</div>
-        <div>
-          <form>
-            <input type="text">
-          </form>
-        </div>
-      </section>
-      <aside>
-      <div class="title-mid">
-        Malicious IP Top 10 
-      </div>
-      <div>
-        <table>
-          <tr>
-            <td>1. Malicious ip xxx</td>
-            <td>2. Malicious ip xxx</td>
-          </tr>
-          <tr>
-            <td>3. Malicious ip xxx</td>
-            <td>4. Malicious ip xxx</td>
-          </tr>
-          <tr>
-            <td>5. Malicious ip xxx</td>
-            <td>6. Malicious ip xxx</td>
-          </tr>
-          <tr>
-            <td>7. Malicious ip xxx</td>
-            <td>8. Malicious ip xxx</td>
-          </tr>
-          <tr>
-            <td>9. Malicious ip xxx</td>
-            <td>10. Malicious ip xxx</td>
-          </tr>
+	<!-- NAVIGATION -->
+
+	<div id="menu">
+		<div class="navbar-wrapper navbar-light bg-light" role="navigation">
+			<div class="container">
+				<button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-backyard"> <span class="sr-only">Toggle navigation</span>
+&#x2630;</button> <a class="navbar-brand site-name" href="#top">ThanosIP</a>
+				<div id="navbar-scroll" class="collapse navbar-collapse navbar-backyard ml-auto">
+					<ul class="nav navbar-nav">
+						<li><a href="#intro" class="nav-link">소개</a>
+						</li>
+						<li><a href="#feature" class="nav-link">Top Malicious IP</a>
+						</li>
+						<li><a href="#feature-2" class="nav-link">Most Searched IP</a>
+						</li>
+						<li><a href="#testi" class="nav-link">Member</a>
+						</li>
+						<li><a href="https://thanos-ip.com/" class="nav-link">API</a>
+						</li>
+						<li><a href="#download" class="nav-link">Download</a>
+						</li>
+						<li><a href="#contact" class="nav-link">Contact</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- /.parallax full screen background image -->
+	<div class="fullscreen landing parallax" style="background-image:url('../static/images/bg.jpg');" data-img-width="2000" data-img-height="1333" data-diff="100">
+
+		<div class="overlay">
+			
+			<div class="container">
+				<div class="row">
+					<div class="col-md-10 mr-auto ml-auto text-center">
+
+						<!-- /.logo -->
+						<div class="logo wow fadeInDown"> <a href=""><img src="../static/images/logo.png" alt="logo"></a></div>
+
+						<!-- /.main title -->
+						<h1 class="wow fadeInLeft">
+							Malicious IP being Thanosed
+						</h1>
+
+						<!-- /.header paragraph -->
+						<div class="landing-text wow fadeInLeft">
+							<p>ThanosIP는 Internet 세상의 평화와 밀집 현상을 방지하기 위해 노력합니다. <br>ThanosIP와 함께 깨끗한 인터넷 환경을 만들어 갑시다!</p>
+						</div>
+
+						<!-- /.subscribe form -->
+						<div class="subscribe-form wow fadeInUp">
+							<form class="news-letter mailchimp" action="https://thanos-ip.com:5100/ip-search" role="form" method="get">
+								<input type="hidden" name="u" value="503bdae81fde8612ff4944435">
+								<input type="hidden" name="id" value="bfdba52708">
+								<input class="form-control" type="email" name="MERGE0" placeholder="ip를 입력하세요" required="">
+								<button type="submit" class="subscribe-btn btn">검색</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
-        </table>
-        
-        </div>
-      <div>
-        그래프 표시
-      </div>
-      </aside>
-  </div>
+	</div>
+	
+	
+	
 
-    <footer>
-      design by Team laBelup
-    </footer>
-    
-    
-    
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-     <!-- Vue Start -->
-     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-     
-     <script>
-        const app = new Vue({
-          el: "#app",
-          methods: {
-            axios_test() {
-              axios("http://127.0.0.1:5000/ip-search", {
-                method: "get",
-              })
-                .then((response) => {
-                  console.log(response);
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
-            },
-          },
-        });
-      </script>
+
+	<!-- /.intro section -->
+	<div id="intro">
+		<div class="container">
+			<div class="row">
+
+				<!-- /.intro image -->
+				<div class="col-lg-6 intro-pic wow slideInLeft">
+					<img src="../static/images/intro-image.jpg" alt="image" class="img-fluid">
+				</div>
+
+				<!-- /.intro content -->
+				<div class="col-lg-6 wow slideInRight">
+					<h2>IP Reputation이란?</h2>
+					<ul>
+						<li>IP 주소의 평판과 관련된 점수.</li>
+						<li>이상행위 탐지시 평판에 반영.</li>
+						<li>보통 이메일 서버에서 스팸필터의 기준에 포함.</li>
+						<li>높은 IP 점수일 수록 신뢰할 수 있는 소스로 간주.</li> 
+					</ul>
+					<a href="#">Great marketing</a>
+					</p>
+
+					<div class="btn-section"><a href="#feature" class="btn-default">Learn More</a></div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+	<!-- /.feature section -->
+	<div id="feature">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mr-lg-auto ml-lg-auto col-12 text-lg-center feature-title">
+
+					<!-- /.feature title -->
+					<h2>Recreate your ideas and gain more success</h2>
+					<p>Increase your user loyalty by maintaining mutual communication and nurturing your online community.</p>
+				</div>
+			</div>
+
+
+
+			<div class="row row-feat">
+				<div class="col-lg-4 text-lg-center">
+
+					<!-- /.feature image -->
+					<div class="feature-img">
+						<img src="../static/images/feature-image.jpg" alt="image" class="img-fluid wow fadeInLeft">
+					</div>
+				</div>
+
+				<div class="col-lg-8">
+					<div class="row">
+
+						<!-- /.feature 1 -->
+						<div class="col-lg-6 feat-list">
+							<i class="pe-7s-notebook pe-5x pe-va wow fadeInUp"></i>
+							<div class="inner">
+								<h4>Marketing Strategy</h4>
+								<p>Good marketing makes the company look smart. Great marketing makes the customer feel smart.
+								</p>
+							</div>
+						</div>
+
+						<!-- /.feature 2 -->
+						<div class="col-lg-6 feat-list">
+							<i class="pe-7s-cash pe-5x pe-va wow fadeInUp" data-wow-delay="0.2s"></i>
+							<div class="inner">
+								<h4>App Monetization</h4>
+								<p>Content builds relationships. Relationships are built on trust. Trust drives revenue. - Andrew Davis</p>
+							</div>
+						</div>
+
+						<!-- /.feature 3 -->
+						<div class="col-lg-6 feat-list">
+							<i class="pe-7s-cart pe-5x pe-va wow fadeInUp" data-wow-delay="0.4s"></i>
+							<div class="inner">
+								<h4>Store Optimization</h4>
+								<p>Never doubt a small group of thoughtful, committed people can change the world. Indeed, it is the only thing that ever has.</p>
+							</div>
+						</div>
+
+						<!-- /.feature 4 -->
+						<div class="col-lg-6 feat-list">
+							<i class="pe-7s-users pe-5x pe-va wow fadeInUp" data-wow-delay="0.6s"></i>
+							<div class="inner">
+								<h4>User Management</h4>
+								<p>Instead of using technology to automate processes, think about using technology to enhance human interaction.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- /.feature 2 section -->
+	 <div id="feature-2">
+		<div class="container">
+			<div class="row">
+
+				<!-- /.feature content -->
+				<div class="col-lg-6 wow fadeInLeft">
+					<h2>Learn how to make your app marketing efficient</h2>
+					<p>Good marketing makes the company look smart. <span class="highlight">Great marketing</span> makes the customer feel smart, - Joe Chernov. Never doubt a small group of thoughtful, committed people can change the world. Indeed, it is the only thing that ever has, - Margaret Mead. The best way to predict the future is to create it, - Peter Drucker.
+					</p>
+
+					<div class="btn-section"><a href="#download" class="btn-default">Download Now</a></div>
+
+				</div>
+
+				<!-- /.feature image -->
+				<div class="col-lg-6 feature-2-pic wow fadeInRight">
+					<img src="../static/images/feature2-image.jpg" alt="macbook" class="img-fluid">
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+	<!-- /.download section -->
+	<div id="download">
+		<div class="action fullscreen parallax" style="background-image:url('../static/images/bg.jpg');" data-img-width="2000" data-img-height="1333" data-diff="100">
+			<div class="overlay">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-8 mr-auto ml-auto col-sm-12 text-lg-center">
+
+							<!-- /.download title -->
+							<h2 class="wow fadeInRight">Would like to know more?</h2>
+							<p class="download-text wow fadeInLeft">We'll research the market, identify the right target audience, analyze competitors and avoid users churn to increase retention. Download now for free and join with thousands happy clients.</p>
+
+							<!-- /.download button -->
+							<div class="download-cta wow fadeInLeft">
+								<a href="#contact" class="btn-secondary">Get Connected</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- /.client section -->
+	<div id="client">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<img alt="client" src="../static/images/client1.png" class="wow fadeInUp">
+					<img alt="client" src="../static/images/client2.png" class="wow fadeInUp" data-wow-delay="0.2s">
+					<img alt="client" src="../static/images/client3.png" class="wow fadeInUp" data-wow-delay="0.4s">
+					<img alt="client" src="../static/images/client4.png" class="wow fadeInUp" data-wow-delay="0.6s">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- /.testimonial section -->
+	<div id="testi">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<h2 class="wow fadeInLeft">TESTIMONIALS</h2>
+					<div class="title-line wow fadeInRight"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-10 mr-auto ml-auto">
+					<div id="owl-testi" class="owl-carousel owl-theme wow fadeInUp">
+
+						<!-- /.testimonial 1 -->
+						<div class="testi-item">
+							<div class="client-pic text-center">
+
+								<!-- /.client photo -->
+								<img src="http://fakeimg.pl/350x350/ddd" alt="client">
+							</div>
+							<div class="box">
+
+								<!-- /.testimonial content -->
+								<p class="message text-center">"We are very happy and satisfied with Backyard service. Our account manager is efficient and very knowledgeable. It was able to create a vast fan base within very short period of time. We would highly recommend Backyard App to anyone."</p>
+							</div>
+							<div class="client-info text-center">
+
+								<!-- /.client name -->
+								Jennifer Lopez, <span class="company">Microsoft</span>
+							</div>
+						</div>
+
+						<!-- /.testimonial 2 -->
+						<div class="testi-item">
+							<div class="client-pic text-center">
+
+								<!-- /.client photo -->
+								<img src="http://fakeimg.pl/350x350/ddd" alt="client">
+							</div>
+							<div class="box">
+
+								<!-- /.testimonial content -->
+								<p class="message text-center">"Everything looks great... Thanks for the quick revision turn around. We were lucky to find you guys and will definitely be using some of your other services in the near future."</p>
+							</div>
+							<div class="client-info text-center">
+
+								<!-- /.client name -->
+								Mike Portnoy, <span class="company">Dream Theater</span>
+							</div>
+						</div>
+
+						<!-- /.testimonial 3 -->
+						<div class="testi-item">
+							<div class="client-pic text-center">
+
+								<!-- /.client photo -->
+								<img src="http://fakeimg.pl/350x350/ddd" alt="client">
+							</div>
+							<div class="box">
+
+								<!-- /.testimonial content -->
+								<p class="message text-center">"Overall, the two reports were very clear and helpful so thank you for the suggestion to do the focus group. We are currently working with our developer to implement some of these suggestions."</p>
+							</div>
+							<div class="client-info text-center">
+
+								<!-- /.client name -->
+								Jennifer Love Hewitt, <span class="company">Lead Vocal</span>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- /.contact section -->
+	<div id="contact">
+		<div class="contact fullscreen parallax" style="background-image:url('../static/images/bg.jpg');" data-img-width="2000" data-img-height="1334" data-diff="100">
+			<div class="overlay">
+				<div class="container">
+					<div class="row">
+						<div class="contact-row">
+
+							<!-- /.address and contact -->
+							<div class="col-lg-5 contact-left wow fadeInUp">
+								<h2><span class="highlight">문의</span> 정보</h2>
+								<ul class="ul-address">
+									<li><i class="pe-7s-map-marker"></i>경기도 성남시 수정구 시흥동 창업로 54 판교제2테크노밸리기업성장센터</br>
+										4층 어딘가
+									</li>
+									<li><i class="pe-7s-phone"></i>+1 (123) 456-7890</br>
+										+2 (123) 456-7890
+									</li>
+									<li><i class="pe-7s-mail"></i><a href="mailto:info@yoursite.com">info@yoursite.com</a></li>
+									<li><i class="pe-7s-look"></i><a href="#">www.yoursite.com</a></li>
+								</ul>
+
+							</div>
+
+							<!-- /.contact form -->
+							<div class="col-lg-7 contact-right">
+								<form method="POST" id="contact-form" class="form-horizontal" action="contactengine.php" onSubmit="alert( 'Thank you for your feedback!' );">
+									<div class="form-group">
+										<input type="text" name="Name" id="Name" class="form-control wow fadeInUp" placeholder="Name" required/>
+									</div>
+									<div class="form-group">
+										<input type="text" name="Email" id="Email" class="form-control wow fadeInUp" placeholder="Email" required/>
+									</div>
+									<div class="form-group">
+										<textarea name="Message" rows="20" cols="20" id="Message" class="form-control input-message wow fadeInUp" placeholder="Message" required></textarea>
+									</div>
+									<div class="form-group">
+										<input type="submit" name="submit" value="Submit" class="btn btn-success wow fadeInUp" />
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- /.footer -->
+	<footer id="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 mr-auto ml-auto">
+					<!-- /.social links -->
+					<div class="social text-center">
+						<ul>
+							<li><a class="wow fadeInUp" href="https://twitter.com/"><i class="fa fa-twitter"></i></a></li>
+							<li><a class="wow fadeInUp" href="https://www.facebook.com/" data-wow-delay="0.2s"><i class="fa fa-facebook"></i></a></li>
+							<li><a class="wow fadeInUp" href="https://plus.google.com/" data-wow-delay="0.4s"><i class="fa fa-google-plus"></i></a></li>
+							<li><a class="wow fadeInUp" href="https://instagram.com/" data-wow-delay="0.6s"><i class="fa fa-instagram"></i></a></li>
+						</ul>
+					</div>
+					<div class="text-center wow fadeInUp" style="font-size: 14px;">Copyright Backyard 2017 - Template by <a href="https://bootstrapthemes.co" target="_blank">https://bootstrapthemes.co</a></div>
+					<a href="#" class="scrollToTop"><i class="pe-7s-up-arrow pe-va"></i></a>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<!-- /.javascript files -->
+	<script src="../static/js/jquery.js"></script>
+	<script src="../static/js/popper.min.js"></script>
+	<script src="../static/js/bootstrap.min.js"></script>
+	<script src="../static/js/jquery.sticky.js"></script>
+	<script src="../static/js/wow.min.js"></script>
+	<script src="../static/js/owl.carousel.min.js"></script>
+	<script src="../static/js/custom.js"></script>
+	<script>
+		new WOW().init();
+
+	</script>
 </body>
+
 </html>

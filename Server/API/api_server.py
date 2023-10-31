@@ -1,60 +1,26 @@
-from flask import Flask, request, jsonify
-from flasgger import Swagger
+from flask import Flask, request, make_response, jsonify
 import sys
-sys.path.append('/home/teamlab/ThanosIP/Module/')
-from DB_Module import dataB
+# sys.path.append('/home/teamlab/Thanos/IP/Module/')
+# import dbModule
+# from IPmaster import ip_shredder
+sys.path.append('D:/laBelup/ThanosIP/Module/')
+from Module import dbModule
 from IPmaster import ip_shredder
+from flask_cors import CORS
 
 app = Flask(__name__)
-swagger = Swagger(app)
+CORS(app)
+db_class=dbModule.Database('laBelup')
 
-db = dataB()
 ip_test = ip_shredder()
 
 @app.route('/')
 def index():
+    return make_response(jsonify("connection success",200))
 
-    return '''
-    <form method="get" action="/search_ip">
-        IP 주소 입력: <input type="text" name="ip"><br>
-        Option:
-        <input type="radio" name="option" value="simple" checked> 간단 검사
-        <input type="radio" name="option" value="detail"> 상세 정보 조회<br>
-        <input type="submit" value="검색">
-    </form>
-    '''
 
 @app.route('/search_ip', methods=['GET'])
 def search_ip():
-    """
-    API endpoint to check an IP address.
-
-    ---
-    tags:
-      - IP Search
-    parameters:
-      - name: ip
-        in: query
-        type: string
-        required: true
-        description: The IP address to check.
-      - name: option
-        in: query
-        type: string
-        enum: ['simple', 'detail']
-        description: The option for IP checking.
-
-    responses:
-      200:
-        description: The result of IP checking.
-        schema:
-          type: object
-          properties:
-            result:
-              type: string
-              description: The result of IP checking.
-    """
-
     try:
         requested_ip = request.args.get('ip')
         option = request.args.get('option')
