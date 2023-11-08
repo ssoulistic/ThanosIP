@@ -3,70 +3,58 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from tqdm import tqdm
 import json
-# import time
+import sys
+sys.path.append('/home/teamlab/ThanosIP/Module/')
+import dbModule 
 
 # 검색 위치 url 및 privatekey 찾아오기.
-file_path="/home/teamlab/ThanosIP/Crawler/etc/teniron.json"
-with open(file_path,'r',encoding='utf-8') as file:
+file_path = "/home/teamlab/ThanosIP/Crawler/etc/teniron.json"
+with open(file_path, 'r', encoding='utf-8') as file:
     data = json.load(file)
     url = data["BarracudaCentral"]['url']['ip']['look']
 
-# 크롤링할 ip 가져오기, 일시적 에러 + 서버 오류시 대응.
-# ip_list_name="laBel_sample0001_ppd.txt"
-ip_list_name='bad_ips.txt'
-ip_list_path=f'/home/teamlab/ThanosIP/Crawler/data/resources/{ip_list_name}'
-new = open(f'/home/teamlab/ThanosIP/Crawler/data/responses/barracuda_result_{ip_list_name}','w')
-retry_list=[]
-error_log=[]
-with open(ip_list_path,'r',encoding='utf-8') as ips:
-        chrome_options = Options()
-        chrome_options.add_argument("headless")
-        chrome_options.add_argument('log-level=3')
-        # chrome_options.add_experimental_option("detach", True) 
-        driver = webdriver.Chrome(options=chrome_options)
-        driver.get(url)
-        driver.implicitly_wait(10)
-        for line in tqdm(ips.readlines(),desc='1차 크롤링'):
-            ip=line.strip()
-            try:
-                driver.find_element(By.CSS_SELECTOR,"#ir_entry").send_keys(ip)
-                driver.find_element(By.CSS_SELECTOR,'#lookup-reputation > div > div.yui-u.first > form > fieldset > div:nth-last-child(1) > input[type=submit]:nth-child(2)').click()
-                driver.find_element(By.CSS_SELECTOR,"#ir_entry").clear()
-                new.write(driver.find_element(By.CSS_SELECTOR,"#lookup-reputation > div > div.yui-u.first > form > fieldset > p").text + "\n")
-            except Exception as e:
-                retry_list.append(ip)
-                error_log.append(f"{ip}:{e}")
+# MariaDB 연결 설정
+db_class = dbModule.Database('laBelup')
 
-        pending=[]
-        for ret in tqdm(range(len(retry_list)),desc="재시도 1차"):
-            try:
-                ip=retry_list[ret]
-                driver.find_element(By.CSS_SELECTOR,"#ir_entry").send_keys(ip)
-                driver.find_element(By.CSS_SELECTOR,'#lookup-reputation > div > div.yui-u.first > form > fieldset > div:nth-last-child(1) > input[type=submit]:nth-child(2)').click()
-                new.write(driver.find_element(By.CSS_SELECTOR,"#lookup-reputation > div > div.yui-u.first > form > fieldset > p").text + "\n")
-            except:
-                 pending.append(ip)
-                 error_log.append(f"{ip}:{e}")
+# db.executeMany로 상위 100개의 IP 주소를 가져온다.
+result=db_class.executeMany('select ip,count(ip) from bad_ip_list where ip not like "%%/%%" group by ip order by count(ip) desc;',100) # not like : 서브넷 미 포함, like: 서브넷 포함
+
+# Selenium 설정
+chrome_options = Options()
+chrome_options.add_argument("headless")
+chrome_options.add_argument('log-level=3')
+driver = webdriver.Chrome(options=chrome_options)
+driver.get(url)
+driver.implicitly_wait(10)
+
+
+try:
+    for i in tqdm(result, desc="progress"):
+        if '/' in i["ip"]:
+            ip, sub = i["ip"].split('/')
+        else:
+            ip = i["ip"]  
+         
+        
+        driver.find_element(By.CSS_SELECTOR, "#ir_entry").send_keys(ip)
+        driver.find_element(By.CSS_SELECTOR, '#lookup-reputation > div > div.yui-u.first > form > fieldset > div:nth-last-child(1) > input[type=submit]:nth-child(2)').click()
+        driver.find_element(By.CSS_SELECTOR, "#ir_entry").clear()
+        result_text = driver.find_element(By.CSS_SELECTOR, "#lookup-reputation > div > div.yui-u.first > form > fieldset > p").text
+
+        # 데이터 추출
+        if "please click here" in result_text :
+            query = f'INSERT INTO BarracudaCentral_Crawl (ip,reputation) VALUES ("{i["ip"]}","malicious")'
+            db_class.execute(query)
+        else :
+            query = f'INSERT INTO BarracudaCentral_Crawl (ip,reputation) VALUES ("{i["ip"]}","safe")'
+            db_class.execute(query)
+            
+
+except Exception as e:
+    print(f"Error: {e}")
+
 
 driver.quit()
-new.write(f"not working : {pending}"+"\n")
-new.write(f"internal error_log : {error_log}"+"\n")
-new.close()
+# MariaDB 연결 종료
+db_class.commit()
 
-# ? 해결중인 issue
-# 크롬 창을 띄우지 않게 하려고 하면 뜨는 에러? 경고? 
-# Uncaught TypeError: Cannot read properties of null (reading 'select') 
-# 내지는
-# A parser-blocking, cross site (i.e. different eTLD+1) script, https://ssl.google-analytics.com/ga.js,
-# is invoked via document.write.
-# The network request for this script MAY be blocked by the browser in this or a future page load
-# due to poor network connectivity.
-# If blocked in this page load, it will be confirmed in a subsequent console message.
-# See https://www.chromestatus.com/feature/5718547946799104 for more details.
-# 이런 에러가 뜬다. 
-
-# ! loglevel을 3으로 올려 임시 해결 
-# INFO = 0, 
-# WARNING = 1, 
-# LOG_ERROR = 2, 
-# LOG_FATAL = 3.

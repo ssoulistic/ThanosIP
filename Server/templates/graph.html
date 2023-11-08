@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+	.canvas {
+        width: 50vw;
+        height: 30vh;
+      }
+	</style>
+    <title>Document</title>
+</head>
+<body>
+
+<canvas id="line-chart" class='canvas'></canvas>
+<br>
+<canvas id="line-chart2" class='canvas'></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+data1=("{{data1}}".replace("[","").replace("]","").replaceAll("&#39;","").split("}, {"))
+
+data2=("{{data2}}".replace("[","").replace("]","").replaceAll("&#39;","").split("}, {"))
+var acc= Array.apply(null, new Array(data1.length)).map(Number.prototype.valueOf,0);
+const days = new Array(); 
+function parser(data){
+	for (let i=0;i<data.length;i++) {
+		let [x,y]=data[i].split(",")
+		if (x.includes('{')){
+		x=x.replace('{','')
+		}
+		if (y.includes('}')){
+		y=y.replace('}','')
+		}
+		day=x.split(":")[1]
+		if (days.length<data.length){
+		days.push(day)}
+		let z=Number(y.split(":")[1])
+		if (i>=1){
+		acc[i]+=acc[i-1]+z
+		}
+		else{
+		acc[i]=z
+		}
+	}
+		
+}
+parser(data1)
+const ctx = document.getElementById('line-chart').getContext('2d');
+const myChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: days,
+    datasets: [{ 
+        data: acc,
+        label: "총 IP 누적 데이터 수 ",
+        borderColor: "#3e95cd",
+        fill: false
+      }      
+    ]
+  },
+  options: {
+  responsive:false,
+    title: {
+      display: true,
+      text: '수집된 데이터 셋 수'
+    }
+  }
+});
+var acc= Array.apply(null, new Array(data1.length)).map(Number.prototype.valueOf,0);
+parser(data2)
+const ctx2 = document.getElementById('line-chart2').getContext('2d');
+const myChart2 = new Chart(ctx2, {
+  type: 'bar',
+  data: {
+    labels: days,
+    datasets: [{ 
+        data: acc,
+        label: "고유 IP 누적 수",
+        borderColor: "#3cba9f",
+		backgroundColor:"#3cba9f",
+        fill: true
+      }      
+    ]
+  },
+  options: {
+  responsive:false,
+    title: {
+      display: true,
+      text: '수집된 데이터 셋 수'
+    }
+  }
+});
+
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+
+</body>
+</html>

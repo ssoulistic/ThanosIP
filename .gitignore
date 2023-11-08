@@ -4,4 +4,8 @@
 /Crawler/etc/**
 /Module/__pycache__
 /log
-test.log
+/Log
+/Server/API/log/
+/Server/nohup.out
+/Server/__pycache__/
+test.*

@@ -1,4 +1,6 @@
-import Crawler.src.module.dbModule as dbModule
+import sys
+sys.path.append('/home/teamlab/ThanosIP/Module')
+from Module import dbModule
 
 table_name="test_table" # 사용할 Table 이름
 # insert_data='"123.123.123.123",1,NULL,"KR","never.comx",33' # DB에 기록할 데이터 (크롤링한 데이터 중 필요한 것)
@@ -9,9 +11,10 @@ country="KR"
 insert_data='"{ip}",{reputation_score},{xxx},"{country}"'
 DB_name="testlab" # 사용할 Database 이름
 db_class = dbModule.Database(DB_name) # db 인스턴스
-sql = f"INSERT INTO {table_name} VALUES({insert_data})" # SQL 쿼리문 => select,insert 모두 가능한데 지금은 입력만
+# sql = f"INSERT INTO {table_name} VALUES({insert_data})" # SQL 쿼리문 => select,insert 모두 가능한데 지금은 입력만
 sql = "SELECT * from test_table"
 db_class.execute(sql) # db에 sql문 작성
+db_class.fetchall()
 db_class.commit() #sql문 실행
 
 

@@ -18,9 +18,10 @@ class ip_shredder:
         self.subnet_only='^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\/([0-9]|[1-2][0-9]|3[0-2])$'
         self.sub_border=[int(2**i) for i in range(7,-1,-1)]
     
-    def isip(self,text):
+    def isip(self,text,mode=0):
         text=text.strip()
-        self.ipmatch=re.match(self.ip_only,text)
+        self.mode=[self.all,self.ip_only,self.subnet_only][mode]
+        self.ipmatch=re.match(self.mode,text)
         if self.ipmatch:
             return True
         else:

@@ -51,7 +51,7 @@ $(document).ready(function () {
 /* sticky navigation */
 $(document).ready(function () {
 	$("#menu").sticky({
-		topSpacing: 0
+		topSpacing: 1
 	});
 });
 

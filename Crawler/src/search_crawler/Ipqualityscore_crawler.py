@@ -1,16 +1,14 @@
-import json
 import requests
+import sys
 from tqdm import tqdm
+import json
+sys.path.append('/home/teamlab/ThanosIP/Module/')
+import dbModule 
 
-# url 과 privatekey 가져오기
-file_path="./etc/teniron.json"
-with open(file_path,'r',encoding='utf-8') as file:
-        data =json.load(file)
-        url,private_key = data["Ipqualityscore"].values()
-
-# 샘플 ip 파일.
-ip_list_name="laBel_sample0001_ppd.txt"
-ip_list_path=f'./data/preprocessed/{ip_list_name}'
+with open('/home/teamlab/ThanosIP/Crawler/etc/teniron.json', 'r') as file:
+    teniron = json.load(file)
+url = teniron["Ipqualityscore"]["url"]["ip"]["look"]
+key = teniron["Ipqualityscore"]["key"]
 
 # IPQS의 검색 옵션 초기값 설정
 strictness="0"
@@ -21,40 +19,58 @@ mobile="true"
 option = "&".join([f'strictness={strictness}',f'allow_public_access_points={allow_public_access_points}',
                    f'fast={fast}',f'lighter_penalties={lighter_penalties}',f'mobile={mobile}'])
 
-# 에러시 처리를 위한 재 시도 목록.
-retry_list=[]
-error_log=[]
-# IPQS 결과 파일 기록 시작.
-new=open(f'./data/responses/IPQS_result_{ip_list_name}','w')
+# MariaDB 연결 설정
+db_class=dbModule.Database('laBelup')
 
-#크롤링 시작.
-with open(ip_list_path,'r',encoding='utf-8') as ips:
-        for line in tqdm(ips.readlines(),desc='1차 크롤링'):
-                if line[0]=="#":
-                        continue
-                else:
-                        ip = line.strip()
-                        try:
-                                query=url+private_key+'/'+ip+"?"+option
-                                res_raw = requests.get(query)
-                                res_json = json.loads(res_raw.text)
-                                new.write(res_raw.text+"\n")
-                        except Exception as e:
-                                retry_list.append(ip)
-                                error_log.append(e)
+# db.executeMany로 상위 100개의 IP 주소를 가져온다.
+result=db_class.executeMany('select ip,count(ip) from bad_ip_list where ip not like "%%/%%" group by ip order by count(ip) desc;',100) # not like : 서브넷 미 포함, like: 서브넷 포함
 
-        # 에러가 났던 ip들 재시도.
-        pending=[]
-        for ret in tqdm(range(len(retry_list)),desc="재시도 1차"):
-                ip=retry_list[ret]
-                try:
-                        res_raw = requests.get(query)
-                        res_json = json.loads(res_raw.text)
-                        new.write(res_raw.text+"\n")
-                except Exception as e:
-                        pending.append(ip)
-                        error_log.append(e)
-        # 에러이유별 분류.
-        new.write(f"http 500+ : {pending}"+"\n")
-        new.write(f"internal error_log : {error_log}"+"\n")
-new.close()
+try:
+    for i in tqdm(result, desc="progress"):
+
+        if '/' in i["ip"]:
+            ip, sub = i["ip"].split('/')
+        else:
+            ip = i["ip"]  
+        
+
+        query=url+key+'/'+ip+"?"+option
+        res_raw = requests.get(query)
+        
+
+        # 데이터 추출
+        data = json.loads(res_raw.text)
+
+        seccess = int(data['success'])
+        message = data['message']
+        fraud_score = data['fraud_score']
+        country_code = data['country_code']
+        region = data['region']
+        city = data['city']
+        ISP = data['ISP']
+        ASN = data['ASN']
+        organization = data['organization']
+        is_crawler = int(data['is_crawler'])
+        timezone = data['timezone']
+        mobile = int(data['mobile'])
+        host = data['host']
+        proxy = int(data['proxy'])
+        vpn = int(data['vpn'])
+        tor = int(data['tor'])
+        active_vpn = int(data['active_vpn'])
+        active_tor = int(data['active_tor'])
+        recent_abuse = int(data['recent_abuse'])
+        latitude = data['latitude']
+        request_id = data['request_id']
+        
+
+        # DB에 저장
+        query = f'INSERT INTO Ipqualityscore_Crawl (ip,success,message,fraud_score,country_code,region,city,ISP,ASN,organization,is_crawler,timezone,mobile,host,proxy,vpn,tor,active_vpn,active_tor,recent_abuse,latitude,request_id) VALUES ("{i["ip"]}", "{seccess}", "{message}", "{fraud_score}", "{country_code}", "{region}", "{city}", "{ISP}", "{ASN}", "{organization}", "{is_crawler}", "{timezone}", "{mobile}", "{host}", "{proxy}", "{vpn}", "{tor}", "{active_vpn}", "{active_tor}", "{recent_abuse}", "{latitude}", "{request_id}")'
+
+        db_class.execute(query)
+
+except Exception as e:
+    print(f"Error: {e}")
+
+# MariaDB 연결 종료
+db_class.commit()

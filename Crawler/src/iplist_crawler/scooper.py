@@ -15,7 +15,7 @@ error_log=[]
 with open("/home/teamlab/ThanosIP/Crawler/etc/teniron.json") as file:
 	options=json.load(file) # url, 필요시 key 받아오기.
 	ip_list = options.keys()
-	exclude=["MariaDB","AwsEC2","AbuseAPI"] #제외할사이트 지정
+	exclude=["MariaDB","AwsEC2","AbuseAPI","Criminalip","VirusTotal"] #제외할사이트 지정
 
 # 사이트 순회 다운로드 
 	for name in ip_list: 
@@ -27,8 +27,13 @@ with open("/home/teamlab/ThanosIP/Crawler/etc/teniron.json") as file:
 				response = requests.get(url)
 				if response.status_code == 200:  # 통신 ok시
 					current_datetime = datetime.now() # 날짜
-					file_hash=hashlib.sha256(response.content).hexdigest() #file 변조 확인 hash값 
-					
+					if name=="Spamhaus":
+						modify_check=str(response.content).split(';')
+						for m in modify_check:
+							if 'Last-Modified' in m.strip():
+								file_hash=hashlib.sha256(m.strip().encode('utf-8')).hexdigest() # Spamhaus만 modify이 매번 달라짐
+					else:
+						file_hash=hashlib.sha256(response.content).hexdigest() #file 변조 확인 hash값 
 					ip_list=shred_inst.ip_extractor(str(response.content)) # ip 추출
 					table_name="bad_ip_list" # 저장할 Table 이름
 					itable_name="file_history"
@@ -43,7 +48,7 @@ with open("/home/teamlab/ThanosIP/Crawler/etc/teniron.json") as file:
 					# hash 존재 여부 확인
 					if not db_hash:
 						try:
-							new_sql = f"INSERT INTO {itable_name} VALUES('{name}','{url}',NULL)"
+							new_sql = f"INSERT INTO {itable_name} VALUES('{name}','{url}',NULL, NULL)"
 							db_class.execute(new_sql)
 							db_class.commit()
 						except Exception as ex:
@@ -61,7 +66,7 @@ with open("/home/teamlab/ThanosIP/Crawler/etc/teniron.json") as file:
 							except Exception as ex:
 								error_log.append("DBerror\n"+str(ex))
 						try:
-							end_sql = f"UPDATE {itable_name} SET hash='{file_hash}' WHERE site_id='{name}'"
+							end_sql = f"UPDATE {itable_name} SET hash='{file_hash}',hash_update_time='{current_datetime}' WHERE site_id='{name}'"
 							db_class.execute(end_sql)
 							db_class.commit()
 						except Exception as ex:
@@ -80,5 +85,6 @@ else:
 
 with open(f"/home/teamlab/ThanosIP/Crawler/data/internal_logs/scooper_log.txt","a") as sclog:
 	sclog.write(f'[{current_datetime}] {message}\n')
+
 
 
