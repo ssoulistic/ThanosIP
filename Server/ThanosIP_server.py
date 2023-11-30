@@ -82,7 +82,7 @@ def search_ip():
         return jsonify({'error': 'Invalid input. Please provide a valid IPv4 address.'})
 
     # 검색 기록 저장
-    insert_data=f'"{client_ip}","{requested_ip}","{current_time}"'
+    insert_data=f"'{client_ip}','{requested_ip}','{current_time}'"
     table_name="search_log"
     db_class.execute(f"insert into {table_name} values({insert_data})")
     db_class.commit()
@@ -93,7 +93,7 @@ def search_ip():
     # 간단한 검색 - 결과가 존재하면 malicious 판정.
     if option == 'simple':
 
-        result=db_class.executeAll("SELECT COUNT(*) FROM bad_ip_list WHERE ip = %s", (requested_ip))
+        result=db_class.executeAll(f"SELECT COUNT(*) FROM bad_ip_list WHERE ip = '{requested_ip}'")
         if result and result[0]['COUNT(*)'] >= 1:
            return jsonify({requested_ip: 'malicious'})
 
@@ -271,9 +271,9 @@ def download_ip():
 
 @app.route('/chart')
 def chart1():
-    sql="select DATE_FORMAT(update_time,'%%Y-%%M-%%D') m,count(update_time) from bad_ip_list  where ip not like '%%/%%' group by m order by update_time asc;"
+    sql="select DATE_FORMAT(update_time,'%%m-%%d') m,count(update_time) from bad_ip_list  where ip not like '%%/%%' group by m order by update_time asc;"
     data1=db_class.executeAll(sql)
-    sql="select d,count(sub1.d)  from (select distinct ip,DATE_FORMAT(update_time,'%%Y-%%M-%%D') d from bad_ip_list where ip not like '%%/%%' group by ip) sub1 group by d order by STR_TO_DATE(d,'%%Y-%%M-%%D');"
+    sql="select d,count(sub1.d)  from (select distinct ip,DATE_FORMAT(update_time,'%%m-%%d') d from bad_ip_list where ip not like '%%/%%' group by ip) sub1 group by d order by STR_TO_DATE(d,'%%m-%%d');"
     data2=db_class.executeAll(sql)
     return render_template('graph.html',data1=data1,data2=data2)
 
