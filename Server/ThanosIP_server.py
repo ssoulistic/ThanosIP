@@ -4,7 +4,7 @@ from datetime import datetime
 from flask_cors import CORS
 import sys
 # 자체 제작 모듈 경로 추가
-sys.path.append('/home/teamlab/ThanosIP/Module/')
+sys.path.append('/home/zanin/ThanosIP/Module/')
 import dbModule
 from IPmaster import ip_shredder
 
@@ -267,7 +267,7 @@ def download_ip():
         description: Download a file containing a suspicious IP list.
     """
 
-    return send_file("/home/teamlab/ThanosIP/Server/API/data/suspicious_ip_list.txt",mimetype="text/plain",as_attachment=True)
+    return send_file("/home/zanin/ThanosIP/Server/API/data/suspicious_ip_list.txt",mimetype="text/plain",as_attachment=True)
 
 @app.route('/chart')
 def chart1():
